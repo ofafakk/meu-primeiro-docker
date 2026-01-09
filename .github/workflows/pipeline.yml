@@ -1,0 +1,27 @@
+name: Minha Primeira Pipeline DevOps
+
+# 1. Quando isso vai rodar?
+on:
+  push:
+    branches: [ "main" ] # Roda toda vez que tiver push na branch main
+  pull_request:
+    branches: [ "main" ]
+
+# 2. O que o robô vai fazer?
+jobs:
+  build-test:
+    # Onde vai rodar? Numa máquina Ubuntu da própria nuvem do GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+    # Passo A: O robô baixa o seu código
+    - name: Baixando o código (Checkout)
+      uses: actions/checkout@v3
+
+    # Passo B: O robô tenta criar a imagem Docker para ver se não tem erro
+    - name: Testando o Build do Docker
+      run: docker build -t meu-site-teste .
+      
+    # Se o comando acima der erro, a pipeline falha e te avisa por email
+    - name: Aviso de Sucesso
+      run: echo "Imagem construída com sucesso! O código está estável."
